@@ -1,0 +1,11 @@
+startMessage	Press Space to start.
+waitMessage	Please wait.
+continueMessage	Press space for the audio cue.
+touchMessage	Follow the audio cue.
+fixationMessage	+
+finishedMessage	The session has finished.
+VASquestion	How pleasant was the last stimulus on your skin?
+VASminLabel	unpleasant
+VASmaxLabel	pleasant
+VASacceptPre	click line
+VASaccept	accept?
