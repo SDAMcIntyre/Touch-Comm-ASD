@@ -116,8 +116,8 @@ receiver = VASInterface(fullscr = True,
                         question = displayText['VASquestion'],
                         minLabel = displayText['VASminLabel'],
                         maxLabel = displayText['VASmaxLabel'],
-						acceptPreText = displayText['VASacceptPre'],
-						acceptText = displayText['VASaccept'])
+                        acceptPreText = displayText['VASacceptPre'],
+                        acceptText = displayText['VASaccept'])
 
 # -----
 
