@@ -8,4 +8,6 @@ VASquestion	How pleasant was the last stimulus on your skin?
 VASminLabel	unpleasant
 VASmaxLabel	pleasant
 VASacceptPre	click line
-VASaccept	accept?
+VASaccept	submit
+commQuestion	What do you think they were trying to communicate?
+OpenTextSubmit	submit

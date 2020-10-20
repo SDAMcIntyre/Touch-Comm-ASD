@@ -6,9 +6,9 @@ from touchcomm import *
 
 # -- GET INPUT FROM THE EXPERIMENTER --
 
-exptInfo = {'Experiment name':'TC-ASD-pleas',
+exptInfo = {'Experiment name':'TC-ASD-comm',
             'Participant Code':'test',
-            'Number of trials per cue':1,
+            'Number of trials per cue':10,
             'Press to continue':True,
             'Participant screen':1,
             'Experimenter screen':0,
@@ -100,15 +100,13 @@ toucher = DisplayInterface(False,
                         [int(i) for i in exptInfo['Experimenter screen resolution'].split(',')], ## convert text input to numbers
                         displayText['startMessage'])
 
-receiver = VASInterface(fullscr = True, 
-                        screen = exptInfo['Participant screen'], 
-                        size = [int(i) for i in exptInfo['Participant screen resolution'].split(',')],
-                        message = displayText['waitMessage'],
-                        question = displayText['VASquestion'],
-                        minLabel = displayText['VASminLabel'],
-                        maxLabel = displayText['VASmaxLabel'],
-                        acceptPreText = displayText['VASacceptPre'],
-                        acceptText = displayText['VASaccept'])
+receiverStimLabels = stimLabels + ['other']
+receiver = ButtonInterface(fullscr = True,
+                                screen = exptInfo['Participant screen'],
+                                size = [int(i) for i in exptInfo['Participant screen resolution'].split(',')],
+                                message = displayText['waitMessage'],
+                                nCol = 2, nRow = 4, 
+                                buttonLabels = [receiverCueText[i] for i in receiverStimLabels])
 
 # -----
 
@@ -141,7 +139,7 @@ for (key,keyTime) in event.waitKeys(keyList=['space','escape'], timeStamped=expt
         saveFiles.logEvent(0,'experiment started')
 
 
-# pleasantness ratings loop
+# communication task loop
 for thisTrial in trials:
     
     event.clearEvents()
@@ -156,9 +154,13 @@ for thisTrial in trials:
                     exptClock,isiCountdown,
                     goStopSound)
     
-    response = get_vas_response(toucher,receiver,
-                                displayText,exptClock,saveFiles)
-      
+    response = get_button_response(stimLabels,receiverCueText,
+                    thisTrial,
+                    displayText,
+                    receiver,toucher,
+                    saveFiles,
+                    exptClock)
+    
     saveFiles.writeTrialData([trials.thisN+1,
                             thisTrial['stim'],
                             response])

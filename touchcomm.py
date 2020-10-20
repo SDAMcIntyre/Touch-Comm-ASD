@@ -10,7 +10,8 @@ class DataFileCollection():
         self.fileprefix = self.folder + filename
         
         self.infoFile = open(self.fileprefix+'_info.csv', 'w') 
-        for k,v in dlgInput.items(): self.infoFile.write(k + ',' + str(v) + '\n')
+        for k,v in dlgInput.items(): 
+            self.infoFile.write('"{}","{}"\n' .format(k, v))
         self.infoFile.close()
         
         self.dataFile = open(self.fileprefix+'_data.csv', 'w')
@@ -20,7 +21,7 @@ class DataFileCollection():
         self.logFile.write('time,event\n')
     
     def logEvent(self,time,event):
-        self.logFile.write('{},{}\n' .format(time,event))
+        self.logFile.write('{},"{}"\n' .format(time,event))
         print('LOG: {} {}' .format(time, event))
     
     def closeFiles(self):
@@ -90,7 +91,7 @@ class VASInterface(DisplayInterface):
             tickHeight=1, stretch=1.5, size = 0.8, 
             labels=[minLabel, maxLabel],
             tickMarks=[-10,10], mouseOnly = True, pos=(0,0),
-			acceptPreText = acceptPreText, acceptText = acceptText)
+            acceptPreText = acceptPreText, acceptText = acceptText)
     
     def getVASrating(self,clock):
         event.clearEvents()
@@ -113,7 +114,7 @@ class VASInterface(DisplayInterface):
 class ButtonInterface(DisplayInterface):
     def __init__(self,fullscr,screen,size,message,nCol,nRow,buttonLabels):
         DisplayInterface.__init__(self,fullscr,screen,size,message)
-        self.nButtons = nCol*nRow
+        self.nButtons = len(buttonLabels)
         self.outlineColour = [-1,-1,-1]
         self.buttonWidth = 0.6
         self.buttonHeight = 0.2
@@ -124,10 +125,13 @@ class ButtonInterface(DisplayInterface):
         xpos = np.linspace(-1,1,nCol+2)[1:nCol+1]
         ypos = -np.linspace(-1,1,nRow+2)[1:nRow+1]
         self.buttonPosition = []
-        for x in xpos:
-            for y in ypos:
+        for y in ypos:
+            for x in xpos:
                 self.buttonPosition += [(x,y)]
-        
+        if self.nButtons % 2 == 1: # if number of buttons is odd
+            self.buttonPosition = self.buttonPosition[0:self.nButtons]
+            self.buttonPosition[self.nButtons-1] = (0,y) # put the last one in the middle
+            
         self.buttons = []
         self.buttonText = []
         for n in range(self.nButtons):
@@ -315,7 +319,7 @@ def get_button_response(stimLabels,receiverCueText,stimInfo,displayText,receiver
     receiver.updateMessage('')
     
     ## randomise button positions
-    randomStimLabels = random.sample(stimLabels,len(stimLabels))
+    randomStimLabels =  random.sample(stimLabels,len(stimLabels)) + ['other']
     receiver.showButtons([receiverCueText[i] for i in randomStimLabels])
     saveFiles.logEvent(exptClock.getTime(),'buttons presented')
     
@@ -345,7 +349,7 @@ def get_vas_response(toucher,receiver,displayText,exptClock,saveFiles):
     if rating == -99:
         saveFiles.logAbort(rTime)
         core.quit()
-    saveFiles.logEvent(rTime,'"Pleasantness rating (-10,10) = {}"' .format(rating))
+    saveFiles.logEvent(rTime,'Pleasantness rating (-10,10) = {}' .format(rating))
     
     return(rating)
 
@@ -353,7 +357,7 @@ def get_vas_response(toucher,receiver,displayText,exptClock,saveFiles):
 if __name__ == "__main__":
     # demo of the button screens and getting input from mouse and then keyboard
     items = ['attention','gratitude','love','sadness','happiness','calming']
-    receiverCueText = dict((line.strip().split('\t') for line in open('receiver-cues-en.txt')))
+    receiverCueText = dict((line.strip().split('\t') for line in open('./text/receiver-cues-en.txt')))
     myInt = ButtonInterface(True,
                             1,
                             [1280,720],
