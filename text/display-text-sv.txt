@@ -1,0 +1,13 @@
+startMessage	Tryck mellanslag för att starta.
+waitMessage	Var god vänta.
+continueMessage	Tryck mellanslag för auditiv instruktion.
+touchMessage	Följ den auditiva instruktionen.
+fixationMessage	+
+finishedMessage	Sessionen är slut.
+VASquestion	Hur behagligt var det senaste stimulusen på din hud?
+VASminLabel	Obehagligt
+VASmaxLabel	Behagligt
+VASacceptPre	Tryck på skala
+VASaccept	Skicka in
+commQuestion	Vad tror du att de försökte kommunicera?
+OpenTextSubmit	Skicka in

@@ -1,0 +1,7 @@
+gratitude	De försökte kommunicera TACKSAMHET.
+love	De försökte uttrycka KÄRLEK.
+sadness	De försökte uttrycka SORG.
+happiness	De försökte uttrycka GLÄDJE.
+attention	De försökte få din UPPMÄRKSAMHET.
+calming	De försökte vara LUGNANDE. 
+other	De försökte kommunicera någonting annat.
