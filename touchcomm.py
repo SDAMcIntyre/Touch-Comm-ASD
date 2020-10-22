@@ -16,25 +16,26 @@ class DataFileCollection():
         
         self.dataFile = open(self.fileprefix+'_data.csv', 'w')
         self.writeTrialData(headers)
+        self.dataFile.close()
         
         self.logFile = open(self.fileprefix+'_log.csv', 'w')
         self.logFile.write('time,event\n')
+        self.logFile.close()
     
     def logEvent(self,time,event):
+        self.logFile = open(self.fileprefix+'_log.csv', 'a')
         self.logFile.write('{},"{}"\n' .format(time,event))
-        print('LOG: {} {}' .format(time, event))
-    
-    def closeFiles(self):
-        self.dataFile.close()
         self.logFile.close()
+        print('LOG: {} {}' .format(time, event))
     
     def logAbort(self,time):
         self.logEvent(time,'experiment aborted')
-        self.closeFiles()
     
     def writeTrialData(self,trialData):
         lineFormatting = ','.join(['{}']*len(trialData))+'\n'
+        self.dataFile = open(self.fileprefix+'_data.csv', 'a')
         self.dataFile.write(lineFormatting.format(*trialData))
+        self.dataFile.close()
 
 class DisplayInterface:
     def __init__(self,fullscr,screen,size,message):

@@ -176,7 +176,6 @@ receiver.updateMessage(displayText['finishedMessage'])
 toucher.updateMessage(displayText['finishedMessage'])
 
 saveFiles.logEvent(exptClock.getTime(),'experiment finished')
-saveFiles.closeFiles()
 core.wait(2)
 receiver.win.close()
 toucher.win.close()
